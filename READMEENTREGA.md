@@ -7,7 +7,7 @@ Estrutura obrigatória do novo README:
 - **Iterações e ajustes**: descreva os principais momentos em que a IA gerou algo errado ou superficial e você teve que corrigir. Quantas iterações principais até chegar ao resultado final
 - **Como navegar a entrega**: caminho dos arquivos entregues e ordem sugerida de leitura
 
-# Sobre o desafio
+# Sobre o desafio nas minhas palavras
 
 O desafio era gerar documentação para que desenvolvedores ou agentes de IA implementassem uma ou várias features novas necessárias para atender novos requisitos de clientes. A ideia foi que a documentação em si também seria gerada com IA e isso seria feito a partir de uma transcrição de uma reunião com as pessoas que discutiram a nova feature do ponto de vista de cliente e técnico. Então, com a transcrição bem definida era possível pegar o que foi decidido e comparando com o código fonte existente criar toda documentação que poderia ser usada pelo time que de fato faria a entrega daquela nova funcionalidade. Na vida real eu vejo que essa transcrição ainda pode ser um pouco complicada de se obter, tenho usado o Zoom para resumos similares, mas é bem claro que muita coisa fica super confusa e ele não parece entender bem o que foi dito, da minha experiência prática isso acontece mais em reuniões em inglês que são os idiomas que geralmente trabalho e gravamos esse tipo de resumo. No futuro acho que isso pode evoluir e aí sim termos algo fidedigno que possa ser utilizado da mesma maneira que nesse trabalho. Talvez o que temos hoje possa ser utilizado como ponto de partida para um posterior refinamento antes do envio final ao time que faz a entrega de fato. De qualquer maneira, a possibilidade de conseguir juntar o contexto inteiro do código com reuniões em que se discutem novas funcionalidades em poucos segundos é impressionante, até então sempre foi preciso ter pessoas com esse tipo de contexto em mente participando das reuniões para dar opiniões, mas agora com a IA é possível que isso mude um pouco talvez o próprio agente participando da reunião trazendo os pontos do código que são iguais ou diferente do que se está falando. Outro ponto que me chamou a atenção foi que talvez isso não seja assim tão viável em projetos grandes, projetos em que trabalhei sim seria possível pois praticamente todos são projetos pequenos e que atendem poucos usuários, mas penso que para empresas maiores isso pode acabar sendo um impeditivo - ou seria preciso delimitar a IA para módulos ou partes do código para ter respostas corretas.
 
@@ -20,6 +20,8 @@ Chat GPT 6, Claude Sonnet 5.5 tudo direto no chat sem agente modificando nada lo
 Comecei pelas ADRs. A organização foi conforme explicado na sessão **Ferramentas de IA utilizadas**.
 
 # Prompts customizados
+
+## ADR
 ---
 v0
 
@@ -85,7 +87,7 @@ g. Decisões técnicas secundárias não precisam aparecer das ADRs
 
 ---
 
-v3
+v2
 
 # Geração de ADRs — Sistema de Webhooks de Notificação de Pedidos
 
@@ -202,7 +204,7 @@ Se houver informações insuficientes para documentar alguma decisão, deixe iss
 </analise-e-rastreabilidade></prompt-para-geracao-adr>
 
 ---
-v4
+v3
 
 # Geração de ADRs — Sistema de Webhooks de Notificação de Pedidos
 
@@ -314,3 +316,232 @@ Utilize os seguintes nomes:
 10. Não inclua explicações extensas sobre o processo. Priorize a entrega dos arquivos e seus links.
 
 ---
+
+## RFC
+
+---
+v0
+Me ajude a refinar o prompt abaixo para que eu envie para outra llm possivelmente o Claude Sonnet 5.5 e tenha um arquivo de RFC conforme os requisitos abaixo. Me diga se da maneira como estou escrevendo é suficiente ou se preciso refinar mais esse prompt, minha ideia é copiar ele literalmente e simplesmente enviar em outro modelo em uma conversa do zero dando acesso apenas as ADRs em formato de markdown.
+
+<prompt>
+Com base em 6 ADRs em anexo gerados a partir de uma transcrição de uma reunião em do time técnico e time de produto, gere uma RFC com os requisitos abaixo,
+
+
+Proposta técnica da solução para revisão: abordagem geral, alternativas e questões em aberto	Arquitetura	Como pretendemos resolver, e o que ainda está em aberto?
+
+Produza o arquivo docs/RFC.md com a proposta técnica da solução, no formato de um documento submetido à equipe para revisão. O RFC opera em nível de arquitetura: apresenta a abordagem escolhida, as alternativas que foram colocadas na mesa e as questões deixadas em aberto. É um documento conciso (2 a 4 páginas); o detalhamento de implementação fica no FDD. Deve incluir no mínimo:
+
+Metadados (autor, status, data, revisores); use os participantes da reunião como revisores
+Resumo executivo (TL;DR) da proposta
+Contexto e problema
+Proposta técnica (visão geral da solução, sem descer ao detalhe de implementação do FDD)
+Alternativas consideradas (pelo menos 2 alternativas reais discutidas e descartadas na reunião, cada uma com o trade-off que levou ao descarte)
+Questões em aberto (pelo menos 2 pontos levantados na reunião e não decididos ou adiados)
+Impacto e riscos
+Decisões relacionadas (links para os ADRs correspondentes)
+O RFC não deve duplicar o detalhamento do FDD. Ele responde "o que propomos e por quê"; o "como construir" em detalhe fica no FDD.
+
+☐ Seção "Questões em aberto" lista pelo menos 2 pontos adiados ou não decididos na reunião
+☐ Referencia, com link, pelo menos 2 ADRs do pacote
+
+</prompt>
+
+---
+v1
+
+# Geração de RFC — Proposta Técnica de Arquitetura
+
+Com base exclusivamente nas ADRs em formato Markdown anexadas a esta conversa, produza um documento RFC (Request for Comments) contendo a proposta técnica consolidada da solução.
+
+As ADRs foram elaboradas a partir de uma transcrição de reunião entre os times técnico e de produto. Elas representam as decisões arquiteturais tomadas, as alternativas discutidas e os pontos que permaneceram em aberto.
+
+**Não utilize fontes externas, conhecimento geral ou suposições para complementar as informações das ADRs.** O objetivo é consolidar o conteúdo existente, não propor uma nova solução.
+
+## 1. Objetivo do documento
+
+Produzir `docs/RFC.md`, um documento submetido à equipe para revisão arquitetural.
+
+O RFC deve responder principalmente:
+
+- O que pretendemos construir?
+- Qual abordagem técnica estamos propondo?
+- Por que essa abordagem foi escolhida?
+- Quais alternativas foram consideradas e descartadas?
+- Quais decisões ainda precisam ser tomadas?
+- Quais são os principais impactos e riscos da proposta?
+
+O RFC deve operar no nível de arquitetura. Não deve reproduzir o detalhamento de implementação, que pertence ao FDD (Functional Design Document).
+
+## 2. Regras de utilização das fontes
+
+Siga rigorosamente estas regras:
+
+1. Utilize todas as ADRs disponibilizadas como fontes do documento.
+2. Considere as decisões registradas nas ADRs como a fonte de verdade para a proposta arquitetural.
+3. Preserve a distinção entre informações discutidas na reunião, informações identificadas no código e inferências dos autores das ADRs.
+4. Não apresente informações classificadas como `[Inferido]` como decisões tomadas ou alternativas efetivamente discutidas na reunião.
+5. Não invente decisões, participantes, aprovações, requisitos, justificativas ou informações ausentes nas fontes.
+6. Quando houver ambiguidades, divergências ou dependências não resolvidas entre ADRs, preserve-as explicitamente como questões em aberto.
+7. Não tente resolver contradições por conta própria. O papel do RFC é expô-las para revisão da equipe.
+8. Não introduza recomendações técnicas próprias ou alternativas que não estejam documentadas nas ADRs.
+
+Se alguma ADR mencionada por outra ADR não estiver entre os arquivos disponibilizados, não tente reconstruir seu conteúdo. Registre a ausência e não crie referências fictícias.
+
+## 3. Estrutura obrigatória do RFC
+
+O documento deve conter as seguintes seções:
+
+### 3.1. Metadados
+
+- Título do RFC.
+- Autor: utilize "Não informado nas fontes" caso não seja possível identificar.
+- Status: Proposto para revisão.
+- Data: data atual de geração, caso disponível.
+- Revisores: utilize os participantes da reunião identificados nas ADRs.
+
+Não confunda participação na reunião com aprovação formal do documento.
+
+### 3.2. Resumo executivo (TL;DR)
+
+Apresente uma síntese objetiva da proposta, incluindo:
+
+- Problema que motivou a iniciativa.
+- Abordagem arquitetural escolhida.
+- Principais decisões que sustentam a solução.
+- Principais questões ainda pendentes.
+
+Um leitor deve conseguir entender a proposta sem precisar ler o documento inteiro.
+
+### 3.3. Contexto e problema
+
+Descreva:
+
+- Cenário atual.
+- Necessidade de negócio que motivou a iniciativa.
+- Problema que a solução pretende resolver.
+- Restrições e requisitos relevantes identificados nas reuniões.
+
+Evite reproduzir detalhes do código existente, exceto quando forem necessários para explicar uma restrição arquitetural.
+
+### 3.4. Proposta técnica
+
+Apresente uma visão consolidada da arquitetura proposta.
+
+Explique os principais componentes, suas responsabilidades e como interagem para atender aos requisitos.
+
+Consolide as decisões das ADRs relacionadas, apresentando uma narrativa arquitetural coerente.
+
+Inclua somente informações necessárias para compreender a solução e suas principais características.
+
+Não entre em detalhes de implementação, como:
+- Estrutura de diretórios e arquivos.
+- Assinaturas de métodos.
+- Modelagem detalhada de tabelas e colunas.
+- Estruturas específicas de classes.
+- Implementação de endpoints.
+- Pseudocódigo ou trechos de código.
+
+Esses detalhes pertencem ao FDD.
+
+### 3.5. Alternativas consideradas
+
+Apresente pelo menos duas alternativas reais que foram discutidas na reunião e posteriormente descartadas ou preteridas.
+
+Para cada alternativa, descreva:
+- Qual era a abordagem considerada.
+- Por que foi considerada.
+- Qual trade-off ou limitação levou à sua rejeição.
+- Qual ADR registra essa discussão.
+
+**Restrição importante:** utilize somente alternativas explicitamente discutidas nas reuniões e registradas nas ADRs. Não transforme alternativas classificadas como `[Inferido]` em alternativas discutidas.
+
+Priorize alternativas que representem decisões arquiteturais relevantes, em vez de escolhas menores de implementação.
+
+### 3.6. Questões em aberto
+
+Apresente pelo menos duas questões que foram levantadas na reunião, mas não tiveram uma decisão definitiva ou foram explicitamente adiadas.
+
+Para cada questão, apresente:
+- Descrição do ponto pendente.
+- Contexto ou motivo pelo qual permanece em aberto.
+- ADR de origem, quando identificável.
+
+Priorize questões que possam afetar a arquitetura, o comportamento da solução, a segurança ou decisões importantes de produto.
+
+Não responda às questões por conta própria.
+
+Questões identificadas posteriormente pelos autores das ADRs como inferências podem ser incluídas somente quando forem relevantes para a revisão arquitetural, deixando explícito que são pontos identificados a partir da análise, e não decisões ou discussões registradas na reunião.
+
+### 3.7. Impactos e riscos
+
+Consolide os principais impactos e riscos decorrentes da arquitetura proposta.
+
+Considere aspectos como:
+- Complexidade arquitetural.
+- Infraestrutura e operação.
+- Desempenho e escalabilidade.
+- Confiabilidade e tratamento de falhas.
+- Segurança.
+- Limitações conhecidas da solução.
+
+Diferencie claramente consequências discutidas na reunião de riscos ou impactos inferidos a partir das decisões registradas.
+
+Não transforme riscos identificados em requisitos ou decisões já aprovadas.
+
+### 3.8. Decisões relacionadas
+
+Apresente as ADRs que fundamentam a proposta.
+
+Para cada ADR, inclua:
+- Identificador.
+- Título.
+- Link relativo para o arquivo Markdown correspondente.
+
+Utilize os nomes reais dos arquivos disponibilizados. Considere que o RFC ficará em `docs/RFC.md` e construa os links relativos corretamente, assumindo que as ADRs estão no mesmo diretório, salvo indicação contrária.
+
+## 4. Diretrizes de qualidade
+
+O documento final deve atender aos seguintes critérios:
+
+- **Concisão:** aproximadamente 2 a 4 páginas. Evite conteúdo redundante e explicações desnecessárias.
+- **Nível arquitetural:** apresente decisões e justificativas, não instruções de implementação.
+- **Rastreabilidade:** as afirmações relevantes devem ser sustentadas pelas ADRs correspondentes.
+- **Consistência:** não deve haver contradições entre a proposta consolidada e as decisões registradas.
+- **Neutralidade:** o documento deve apresentar a proposta para revisão, sem tratar questões ainda abertas como decisões definitivas.
+- **Clareza:** deve ser compreensível para integrantes dos times técnico e de produto.
+
+Não tente preencher todas as seções com conteúdo artificial. Se determinada informação não estiver disponível nas ADRs, indique isso explicitamente.
+
+## 5. Critérios obrigatórios de validação
+
+Antes de finalizar o documento, verifique:
+
+- [ ] O RFC apresenta metadados, incluindo status, data, autor e revisores.
+- [ ] O resumo executivo explica claramente a proposta.
+- [ ] O contexto explica o problema de negócio e a motivação da iniciativa.
+- [ ] A proposta técnica consolida as decisões arquiteturais das ADRs.
+- [ ] Existem pelo menos duas alternativas reais discutidas e descartadas na reunião, acompanhadas dos respectivos trade-offs.
+- [ ] A seção "Questões em aberto" contém pelo menos dois pontos efetivamente adiados ou não decididos na reunião.
+- [ ] Os impactos e riscos estão identificados e não são confundidos com decisões.
+- [ ] O documento referencia, por meio de links relativos funcionais, pelo menos duas ADRs do pacote.
+- [ ] Nenhuma decisão, justificativa ou alternativa foi inventada.
+- [ ] O RFC não duplica o detalhamento que pertence ao FDD.
+- [ ] O documento possui aproximadamente 2 a 4 páginas.
+
+## 6. Entrega
+
+Crie efetivamente o arquivo Markdown em:
+
+`docs/RFC.md`
+
+Não se limite a apresentar o conteúdo do documento na resposta.
+
+Ao finalizar:
+1. Verifique se o arquivo foi criado no caminho solicitado.
+2. Revise o conteúdo contra todos os critérios de validação.
+3. Disponibilize um link para download do arquivo RFC.md.
+4. Apresente uma confirmação sucinta da entrega, indicando eventuais limitações encontradas nas fontes.
+
+---
+
+## FDD
