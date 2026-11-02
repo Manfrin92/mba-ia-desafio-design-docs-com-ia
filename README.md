@@ -8,7 +8,7 @@ Chat GPT 6, Claude Sonnet 5.5 tudo direto no chat sem agente modificando nada lo
 
 # Workflow adotado
 
-Comecei pelas ADRs. A organização foi conforme explicado na sessão **Ferramentas de IA utilizadas**.
+Segui a ordem recomendada. A organização e a maneira que segui foi conforme explicado na sessão **Ferramentas de IA utilizadas**. Na sessao prompts customizados estão os prompts que fui enviando para cada documento separados por v0 até vx com as versão difinitiva e final que levou a geração da documentação em si.
 
 # Prompts customizados
 
