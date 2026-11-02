@@ -7,7 +7,7 @@
 | Campo | Valor |
 |---|---|
 | Título | Webhooks de saída para mudança de status de pedidos |
-| Autor | Não informado nas fontes |
+| Autor | Felipe Manfrin usando GPT 6 e Sonnet 5.5 |
 | Status | Proposto para revisão |
 | Data | 01/11/2026 (data de geração) |
 | Revisores | Larissa, Diego, Bruno, Sofia, Marcos (participantes da reunião citados nas ADRs) |

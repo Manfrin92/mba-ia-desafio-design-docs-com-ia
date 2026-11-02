@@ -545,3 +545,630 @@ Ao finalizar:
 ---
 
 ## FDD
+
+v0
+
+Me ajude a refinar o prompt abaixo para que eu envie para o Claude Sonnet 5.5 e tenha um arquivo de FDD conforme os requisitos abaixo. Minha ideia é copiar ele literalmente e simplesmente enviar em outro modelo em uma conversa do zero dando acesso apenas as ADRs em formato de markdown.
+
+<prompt>
+
+Gere um arquivo markdown de Feature Design Docs (FDD) com as decisões formalizadas e a proposta de acordo com as ADRs, a RFC em anexo e o código do projeto disponível em https://github.com/Manfrin92/mba-ia-desafio-design-docs-com-ia folder "src".
+
+- Seção "Contratos públicos" inclui pelo menos 4 endpoints HTTP com payload de exemplo (request e response) e status codes
+- Seção "Integração com o sistema existente" referencia pelo menos 4 caminhos de arquivo reais do código base e descrever como o módulo de webhooks vai se integrar com cada um (por exemplo, como o método `changeStatus` será estendido, como as classes de erro existentes serão reutilizadas)
+- Seção "Observabilidade" cita métricas, logs e tracing
+- Detalhe o como implementar da feature precisa estar acionável o suficiente para um desenvolvedor pegar e começar a codar. 
+
+Minimo que deve conter,
+
+- Contexto e motivação técnica
+- Objetivos técnicos
+- Escopo e exclusões
+- Fluxos detalhados (criação do evento na outbox, processamento pelo worker, retry, DLQ)
+- Contratos públicos (endpoints HTTP com payloads de exemplo, headers, status codes, semântica)
+- Matriz de erros previstos com códigos no padrão `WEBHOOK_*`
+- Estratégias de resiliência (timeouts, retries, backoff, fallback)
+- Observabilidade (métricas, logs, tracing)
+- Dependências e compatibilidade
+- Critérios de aceite técnicos
+- Riscos e mitigação
+
+</prompt>
+
+---
+
+v1
+
+# Geração de Feature Design Document (FDD) — Webhooks de saída para mudança de status de pedidos
+
+## 1. Papel e objetivo
+
+Atue como um Software Architect sênior, especialista em arquitetura de sistemas, Node.js, TypeScript, Express, Prisma ORM e MySQL.
+
+Sua tarefa é produzir um **Feature Design Document (FDD)** completo, tecnicamente consistente e suficientemente detalhado para orientar a implementação de uma nova feature de webhooks de saída para notificações de mudança de status de pedidos.
+
+O documento deve traduzir as decisões arquiteturais formalizadas nas ADRs em uma especificação técnica de implementação, considerando a RFC e a estrutura real do projeto existente.
+
+O resultado deve ser um documento de engenharia, não uma explicação conceitual sobre webhooks ou padrões arquiteturais.
+
+## 2. Fontes de informação
+
+Você terá acesso às seguintes fontes:
+
+**ADRs:**
+Todas as ADRs relacionadas à feature, fornecidas como arquivos Markdown.
+
+**RFC:**
+Documento de Request for Comments que consolida o contexto, a proposta técnica, as alternativas consideradas, os impactos e as questões em aberto.
+
+**Repositório:**
+https://github.com/Manfrin92/mba-ia-desafio-design-docs-com-ia
+
+O código-fonte relevante está no diretório `src`, mas você deve inspecionar também outros arquivos do repositório quando necessário, especialmente:
+
+- `prisma/schema.prisma`
+- `package.json`
+- Configurações de ambiente.
+- Configurações de testes.
+- Scripts de inicialização.
+- Configurações de infraestrutura e Docker.
+
+## 3. Regras de análise e rastreabilidade
+
+Antes de elaborar o FDD, analise integralmente as fontes disponíveis.
+
+Siga rigorosamente estas regras:
+
+### 3.1. Precedência das fontes
+
+Utilize a seguinte hierarquia:
+
+1. ADRs com status Accepted/Aceito: decisões arquiteturais formalizadas e obrigatórias para o design.
+2. RFC: contexto, requisitos, proposta técnica, restrições e questões em aberto.
+3. Código-fonte: evidência da implementação existente, convenções e pontos de integração.
+
+O código existente não deve ser utilizado para contradizer uma decisão arquitetural formalizada.
+
+Caso identifique divergências entre as fontes, registre-as explicitamente.
+
+### 3.2. Não inventar decisões
+
+As ADRs podem conter pontos explicitamente não decididos.
+
+Não transforme hipóteses, inferências ou sugestões em decisões formalizadas.
+
+Para cada ponto relevante, identifique sua natureza:
+
+- **Decidido:** formalizado em uma ADR aceita.
+- **Existente:** comportamento ou estrutura comprovadamente presente no código.
+- **Proposta do FDD:** solução técnica sugerida para preencher uma lacuna de implementação.
+- **Pendente:** decisão que precisa de validação dos responsáveis.
+
+Quando uma definição técnica for necessária para tornar a implementação acionável, apresente uma proposta concreta, identifique-a como proposta do FDD e explique sua justificativa.
+
+Não apresente essa proposta como se tivesse sido aprovada na reunião ou formalizada em uma ADR.
+
+### 3.3. Rastreabilidade
+
+Sempre que uma decisão arquitetural influenciar uma definição de implementação, referencie a ADR correspondente.
+
+Utilize referências no formato `[ADR-001]`, `[ADR-002]` etc.
+
+Não atribua decisões a uma ADR que não as formalizou.
+
+### 3.4. Integridade das fontes
+
+Não invente informações sobre o código-fonte. Todo caminho de arquivo, classe, função, método, interface, tipo ou propriedade citado como existente deve ser confirmado no repositório.
+
+Caso não consiga acessar o repositório, informe essa limitação e não fabrique referências de código.
+
+## 4. Diretrizes de elaboração
+
+O FDD deve ser orientado à implementação.
+
+Evite explicações genéricas sobre conceitos como Transactional Outbox, HMAC, polling, retry e DLQ.
+
+Priorize:
+
+- Estruturas de dados concretas.
+- Responsabilidades de módulos e componentes.
+- Fluxos de execução detalhados.
+- Contratos HTTP.
+- Assinaturas e responsabilidades de métodos.
+- Alterações necessárias no código existente.
+- Regras de negócio e validações.
+- Tratamento de erros.
+- Comportamentos em cenários de falha.
+- Estratégias de testes.
+- Critérios objetivos de aceite.
+
+Sempre que possível, utilize tabelas para apresentar estruturas, contratos, estados, responsabilidades e matrizes de decisão.
+
+Inclua diagramas Mermaid quando contribuírem para o entendimento dos fluxos e relacionamentos.
+
+Não introduza novas tecnologias, serviços externos ou dependências de infraestrutura sem justificativa e sem verificar sua compatibilidade com as ADRs.
+
+## 5. Estrutura obrigatória do FDD
+
+O documento deve conter, no mínimo, as seguintes seções.
+
+### 5.1. Metadados
+
+- Título da feature.
+- Tipo de documento: Feature Design Document.
+- Status: Proposto para revisão.
+- Referências às ADRs utilizadas.
+- Referência à RFC.
+
+### 5.2. Contexto e motivação técnica
+
+Descreva:
+
+- O problema atual que motiva a feature.
+- Como o sistema funciona atualmente.
+- Por que a solução é necessária.
+- Quais limitações técnicas e arquiteturais precisam ser respeitadas.
+- Quais requisitos de negócio e não funcionais influenciam a implementação.
+
+### 5.3. Objetivos técnicos
+
+Liste os objetivos técnicos da implementação de forma objetiva e verificável.
+
+### 5.4. Escopo e exclusões
+
+Documente:
+
+- Funcionalidades contempladas.
+- Funcionalidades explicitamente fora do escopo.
+- Limitações conhecidas.
+- Comportamentos que não devem ser implementados nesta entrega.
+
+Não amplie o escopo por iniciativa própria.
+
+### 5.5. Arquitetura e componentes
+
+Descreva os componentes necessários e suas respectivas responsabilidades.
+
+Considere, no mínimo, quando aplicável:
+
+- Módulo de gerenciamento de webhooks.
+- Integração com o módulo de pedidos.
+- Persistência da Outbox.
+- Worker independente.
+- Processador de eventos.
+- Cliente HTTP de entrega.
+- Gerenciamento de secrets e assinatura HMAC.
+- Persistência da Dead Letter Queue.
+- Mecanismo de replay administrativo.
+
+Explique as interações entre os componentes e as dependências existentes.
+
+Inclua um diagrama Mermaid da arquitetura proposta.
+
+### 5.6. Modelo de dados e persistência
+
+Especifique detalhadamente as estruturas de persistência necessárias.
+
+Para cada tabela, apresente:
+
+- Nome.
+- Finalidade.
+- Colunas.
+- Tipos de dados compatíveis com Prisma e MySQL.
+- Obrigatoriedade e valores default.
+- Chaves primárias e estrangeiras.
+- Índices.
+- Relacionamentos.
+- Restrições e regras de integridade.
+
+Considere especificamente:
+
+- Configurações de endpoints de webhook.
+- Eventos da Outbox.
+- Dead Letter Queue.
+- Histórico de tentativas de entrega, caso necessário.
+
+Explique a relação entre as entidades e a cardinalidade proposta.
+
+Inclua exemplos de registros quando ajudarem a esclarecer o modelo.
+
+Apresente os estados possíveis da Outbox e da DLQ e suas respectivas transições.
+
+Diferencie claramente as estruturas já existentes das novas estruturas propostas.
+
+Quando houver decisões não formalizadas nas ADRs, identifique as propostas e os pontos pendentes.
+
+### 5.7. Fluxos detalhados de execução
+
+Documente passo a passo os principais fluxos da feature.
+
+No mínimo:
+
+**A. Criação do evento na Outbox**
+- Entrada no fluxo de mudança de status.
+- Execução da transação.
+- Atualização do pedido.
+- Registro do histórico de status.
+- Aplicação do filtro de status dos webhooks.
+- Construção do snapshot do payload.
+- Inserção na Outbox.
+- Commit ou rollback.
+
+**B. Processamento pelo Worker**
+- Inicialização do processo.
+- Conexão com o banco.
+- Polling.
+- Seleção dos eventos elegíveis.
+- Ordenação.
+- Controle do estado de processamento.
+- Identificação dos endpoints destinatários.
+- Construção dos headers.
+- Assinatura HMAC-SHA256.
+- Envio HTTP.
+- Interpretação da resposta.
+- Atualização do estado.
+
+**C. Falhas e retry**
+- Identificação de timeout.
+- Identificação de erros de conexão.
+- Tratamento de respostas HTTP.
+- Atualização do contador de tentativas.
+- Cálculo do próximo horário de execução.
+- Backoff.
+- Retorno do evento à fila de processamento.
+
+**D. Dead Letter Queue**
+- Critério para esgotamento das tentativas.
+- Transferência do evento.
+- Preservação dos dados necessários para debug.
+- Consulta de eventos na DLQ.
+- Replay manual.
+- Autorização ADMIN.
+- Auditoria da operação.
+
+**E. Gerenciamento dos webhooks**
+- Criação.
+- Consulta.
+- Atualização.
+- Remoção ou desativação.
+- Configuração de status de interesse.
+- Geração de secret.
+- Rotação de secret.
+
+Inclua diagramas Mermaid de sequência para os fluxos mais relevantes.
+
+### 5.8. Contratos públicos
+
+Especifique os contratos HTTP da feature.
+
+Inclua pelo menos quatro endpoints HTTP, com detalhamento suficiente para que frontend, backend e consumidores externos possam implementar suas integrações.
+
+Considere as operações de:
+
+- Gerenciamento de endpoints de webhook.
+- Consulta de configurações.
+- Atualização ou remoção de configurações.
+- Rotação de secret.
+- Consulta do histórico de entregas.
+- Consulta e replay de eventos na DLQ.
+
+Para cada endpoint, documente:
+
+| Informação | Descrição |
+|---|---|
+| Método e rota | Verbo HTTP e caminho completo |
+| Objetivo | Responsabilidade do endpoint |
+| Autenticação | JWT ou outro mecanismo definido |
+| Autorização | Roles exigidas |
+| Headers | Headers obrigatórios e opcionais |
+| Path/query params | Parâmetros e validações |
+| Request | Payload JSON completo de exemplo |
+| Response | Payload JSON completo de exemplo |
+| Status codes | Códigos HTTP e respectivas condições |
+| Erros | Códigos de erro e mensagens |
+| Semântica | Comportamento esperado e efeitos da operação |
+
+Utilize o prefixo de rotas efetivamente adotado pelo projeto, verificando sua composição no código.
+
+Além dos endpoints de gerenciamento, documente o contrato HTTP enviado ao cliente destinatário do webhook:
+
+- Estrutura do payload.
+- Headers enviados.
+- Significado de cada header.
+- Formato da assinatura HMAC.
+- Como o cliente deve validar a assinatura.
+- Como identificar e deduplicar eventos.
+- Comportamento esperado em caso de duplicidade.
+- Semântica de entrega e tratamento de respostas HTTP.
+
+Se alguma definição não estiver formalizada nas fontes, apresente uma proposta explícita e identifique-a como pendente de aprovação.
+
+### 5.9. Matriz de erros
+
+Crie uma matriz de erros previstos para o módulo.
+
+Utilize o padrão de nomenclatura `WEBHOOK_*`.
+
+Para cada erro, documente:
+
+- Código.
+- Significado.
+- Condição que provoca o erro.
+- Camada responsável.
+- Comportamento esperado.
+- HTTP status, quando aplicável.
+- Se deve gerar retry, DLQ ou rejeição imediata.
+
+Considere erros de validação, autenticação, autorização, persistência, configuração, assinatura, comunicação HTTP, timeout, processamento e replay.
+
+Reutilize os padrões e classes de erro existentes no projeto sempre que possível.
+
+Não invente classes existentes. Caso seja necessária uma nova classe, identifique-a como proposta.
+
+### 5.10. Estratégias de resiliência
+
+Detalhe as estratégias de:
+
+- Timeout HTTP.
+- Retry.
+- Backoff exponencial.
+- Limite de tentativas.
+- Classificação de falhas transitórias e permanentes.
+- Recuperação de eventos em processamento após queda do worker.
+- Comportamento em caso de indisponibilidade do banco.
+- Shutdown gracioso.
+- Prevenção de processamento duplicado.
+- Ordenação dos eventos.
+- Comportamento durante a indisponibilidade prolongada de um endpoint.
+
+Respeite as políticas formalizadas nas ADRs.
+
+Quando houver lacunas, apresente alternativas ou uma proposta recomendada, sem alterar silenciosamente as decisões aceitas.
+
+### 5.11. Segurança
+
+Documente:
+
+- Autenticação e autorização da API de gerenciamento.
+- Geração de secrets.
+- Armazenamento e acesso às secrets.
+- Assinatura HMAC-SHA256.
+- Validação da assinatura pelo destinatário.
+- Rotação de secrets.
+- Período de convivência entre secrets.
+- Proteção de dados sensíveis em logs.
+- Validação de URLs.
+- Restrições de tamanho do payload.
+- Riscos relacionados à configuração de endpoints externos.
+
+Dê atenção especial às lacunas de segurança identificadas nas ADRs, sem apresentar hipóteses como decisões já aprovadas.
+
+### 5.12. Integração com o sistema existente
+
+Esta seção é obrigatória e deve ser especialmente detalhada.
+
+Identifique de 4 a 6 caminhos de arquivos reais do código-fonte e explique como cada um será utilizado ou modificado para implementar a feature.
+
+Para cada arquivo, apresente:
+
+| Informação | Descrição |
+|---|---|
+| Caminho | Caminho real no repositório |
+| Responsabilidade atual | O que o arquivo faz atualmente |
+| Integração necessária | Como participará da feature |
+| Alterações propostas | O que deverá ser modificado |
+| Novos elementos | Métodos, funções, classes ou tipos necessários |
+| Dependências | Componentes com os quais interage |
+
+Considere especialmente:
+
+- `OrderService.changeStatus`: como o evento será publicado dentro da transação existente, preservando atomicidade.
+- Tratamento de erros: como as classes e middlewares existentes serão reutilizados.
+- Autenticação: como os middlewares existentes serão aproveitados.
+- Logger: como serão adicionados logs e redaction de informações sensíveis.
+- Prisma: como serão adicionados os novos modelos e operações.
+- Rotas: como o módulo será registrado na composição atual da aplicação.
+- Worker: como será criado o novo entry point e como compartilhará as configurações necessárias.
+- Testes: como a infraestrutura existente será estendida.
+
+Não se limite aos exemplos acima.
+
+Utilize os arquivos efetivamente encontrados no repositório.
+
+Para cada alteração, detalhe o ponto de extensão e o comportamento esperado.
+
+Quando possível, identifique os métodos existentes e proponha assinaturas de novos métodos, indicando parâmetros, retornos e responsabilidades.
+
+**Não apresente apenas uma lista de arquivos. O objetivo é fornecer um plano concreto de integração com o código existente.**
+
+### 5.13. Organização proposta dos arquivos
+
+Apresente a estrutura de diretórios e arquivos que deverão existir após a implementação.
+
+Diferencie:
+
+- Arquivos existentes que serão modificados.
+- Novos arquivos.
+- Arquivos de configuração.
+- Arquivos de migrations.
+- Arquivos de testes.
+
+Respeite o padrão de organização por módulos e as convenções encontradas no projeto.
+
+Não proponha uma reorganização geral do código que não seja necessária para a feature.
+
+### 5.14. Observabilidade
+
+Especifique as estratégias de observabilidade considerando métricas, logs e tracing.
+
+**Métricas:**
+- Quantidade de eventos criados.
+- Quantidade de eventos pendentes.
+- Quantidade de eventos processados.
+- Quantidade de entregas com sucesso.
+- Quantidade de falhas.
+- Quantidade de eventos na DLQ.
+- Quantidade de retries.
+- Latência de entrega.
+- Tempo de processamento.
+- Idade do evento mais antigo pendente.
+- Saúde do worker.
+
+Para cada métrica, especifique o que mede e sua utilidade operacional.
+
+**Logs:**
+- Eventos criados.
+- Início e término de processamento.
+- Tentativas de entrega.
+- Respostas HTTP.
+- Falhas e timeouts.
+- Movimentações para DLQ.
+- Operações de replay.
+- Rotação de secrets.
+
+Identifique os campos estruturados recomendados e os dados que nunca devem ser registrados.
+
+**Tracing:**
+Explique como correlacionar a mudança de status, o registro na Outbox, o processamento pelo worker e a entrega HTTP.
+
+Considere a propagação de identificadores de correlação entre processos.
+
+Não presuma que exista uma infraestrutura de tracing instalada. Verifique o projeto e diferencie recursos existentes de propostas.
+
+### 5.15. Dependências e compatibilidade
+
+Documente:
+
+- Dependências npm existentes que serão reutilizadas.
+- Novas dependências necessárias, se houver.
+- Recursos nativos do Node.js que podem ser aproveitados.
+- Compatibilidade com a versão atual do Node.js.
+- Compatibilidade com Prisma e MySQL.
+- Configurações de ambiente necessárias.
+- Scripts de execução.
+- Impactos na inicialização e no deploy.
+
+Evite adicionar dependências sem necessidade técnica.
+
+### 5.16. Estratégia de testes
+
+Defina uma estratégia de testes cobrindo:
+
+- Testes unitários.
+- Testes de integração.
+- Testes de persistência.
+- Testes transacionais.
+- Testes do worker.
+- Testes de retry e backoff.
+- Testes de DLQ e replay.
+- Testes de assinatura HMAC.
+- Testes de contratos HTTP.
+- Testes de autorização.
+- Testes de falhas e recuperação.
+
+Para cada grupo, apresente cenários concretos e o comportamento esperado.
+
+Considere os padrões de testes já existentes no projeto.
+
+### 5.17. Critérios de aceite técnicos
+
+Crie critérios objetivos e verificáveis.
+
+Cada critério deve permitir determinar se a implementação está correta.
+
+Inclua requisitos de:
+
+- Atomicidade entre mudança de status e evento.
+- Snapshot do payload.
+- Processamento assíncrono.
+- Latência esperada.
+- Retry.
+- DLQ.
+- Replay administrativo.
+- Autenticação e assinatura.
+- Deduplicação.
+- Segurança.
+- Observabilidade.
+- Compatibilidade com o sistema existente.
+
+### 5.18. Riscos e mitigação
+
+Documente os riscos identificados nas fontes e os riscos técnicos adicionais encontrados durante a análise.
+
+Para cada risco, apresente:
+
+- Descrição.
+- Causa.
+- Impacto.
+- Probabilidade qualitativa, se possível.
+- Estratégia de mitigação.
+- Se é uma limitação aceita, uma pendência ou um risco que exige aprovação.
+
+Diferencie riscos formalmente identificados nas ADRs de riscos adicionais identificados durante o design.
+
+### 5.19. Decisões pendentes e questões para revisão
+
+Consolide todas as decisões necessárias para iniciar a implementação que ainda não estejam formalizadas.
+
+Para cada item, apresente:
+
+- Questão.
+- Contexto.
+- Por que precisa ser decidida.
+- Proposta recomendada, quando possível.
+- Impacto de não decidir.
+- ADR relacionada, quando aplicável.
+
+Não esconda ambiguidades para produzir um documento aparentemente completo.
+
+## 6. Requisitos de qualidade
+
+O documento final deverá atender aos seguintes requisitos:
+
+1. Deve ser tecnicamente consistente com todas as ADRs aceitas.
+2. Deve respeitar os requisitos e restrições da RFC.
+3. Deve refletir a estrutura real do código-fonte.
+4. Deve possuir pelo menos quatro endpoints HTTP documentados com exemplos completos de request e response.
+5. Deve referenciar pelo menos quatro caminhos reais de arquivos existentes e explicar suas integrações.
+6. Deve detalhar os fluxos de Outbox, Worker, Retry e DLQ.
+7. Deve especificar os modelos de dados e suas transições de estado.
+8. Deve documentar métricas, logs e tracing.
+9. Deve fornecer detalhes suficientes para que um desenvolvedor consiga iniciar a implementação sem precisar tomar decisões arquiteturais importantes por conta própria.
+10. Deve identificar explicitamente as decisões ainda pendentes.
+11. Deve evitar abstrações desnecessárias e propostas que contrariem as ADRs.
+12. Deve manter rastreabilidade entre requisitos, decisões e implementação.
+
+## 7. Revisão de consistência antes da entrega
+
+Antes de finalizar o documento, faça uma revisão crítica verificando:
+
+- Se todas as ADRs disponíveis foram consideradas.
+- Se todas as decisões aceitas foram respeitadas.
+- Se existem contradições entre seções do FDD.
+- Se os contratos HTTP são consistentes com os modelos de dados.
+- Se os estados da Outbox e DLQ são coerentes com os fluxos descritos.
+- Se os exemplos de payload correspondem aos contratos definidos.
+- Se os códigos de erro estão consistentes.
+- Se os caminhos de arquivos e símbolos citados existem.
+- Se as propostas estão claramente diferenciadas das decisões formalizadas.
+- Se as questões pendentes foram preservadas.
+- Se os critérios de aceite são verificáveis.
+- Se um desenvolvedor consegue compreender o que precisa modificar e implementar.
+
+Corrija inconsistências identificadas antes de entregar.
+
+## 8. Entrega
+
+Gere um arquivo Markdown independente, com todo o conteúdo do FDD.
+
+Nome do arquivo:
+
+`FDD-webhooks-de-saida-para-mudanca-de-status-de-pedidos.md`
+
+Não entregue apenas um resumo, um esqueleto ou uma lista de recomendações.
+
+O documento deve conter todas as seções obrigatórias, tabelas, exemplos de payloads, diagramas e especificações técnicas.
+
+Salve o arquivo como artefato para download e disponibilize um link para acessá-lo, caso o ambiente permita a criação de arquivos.
+
+Na resposta final, apresente somente uma breve confirmação da geração do documento e o link para download. Não reproduza o conteúdo integral do FDD na resposta.
